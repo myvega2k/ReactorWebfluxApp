@@ -12,7 +12,20 @@ public class MonoTest {
                 .map(msg -> msg.toUpperCase())
                 .log();
 
-        stringMono.subscribe(System.out::println);
+        //stringMono.subscribe(System.out::println);
+        //public final Disposable subscribe(@Nullable Consumer<? super T> consumer,
+        //                                  @Nullable Consumer<? super Throwable> errorConsumer,
+        //                                  @Nullable Runnable completeConsumer) {
+        stringMono.subscribe(
+                value -> {
+                    System.out.println("onNext " + value);
+                },
+                error -> {
+                    System.out.println("onError " + error.getMessage());
+                },
+                () -> {
+                    System.out.println("OnComplete ");
+                });
 
         StepVerifier.create(stringMono)
                 .expectNext("WELCOME TO WEBFLUX.COM")
