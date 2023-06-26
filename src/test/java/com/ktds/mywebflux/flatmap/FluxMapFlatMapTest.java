@@ -44,8 +44,10 @@ public class FluxMapFlatMapTest {
         */
 
         Flux<MyCustomer> customerFlux = Flux.fromIterable(customerList)
-                //.flatMap(customer -> Mono.just(new MyCustomer(customer.getName().toUpperCase(), customer.getEmail().toUpperCase())))
-                .flatMap(getFunction())
+                .flatMap(customer ->
+                        Mono.just(new MyCustomer(customer.getName().toUpperCase(),
+                                                 customer.getEmail().toUpperCase())))
+                //.flatMap(getFunction())
                 .log();
         customerFlux.subscribe(System.out::println);
 
@@ -71,13 +73,15 @@ public class FluxMapFlatMapTest {
         System.out.println("New Flux:");
         transformedFlux.subscribe(name -> System.out.print(name + " "));
 
-        Flux.fromArray(new String[]{"Tom", "Melissa", "Steven", "Megan"})
-                .map(name -> Mono.just(name.concat(" modified")))
-                        .subscribe(System.out::println);
+        Flux<Mono<String>> monoFlux = Flux.fromArray(new String[]{"Tom", "Melissa", "Steven", "Megan"})
+                .map(name -> Mono.just(name.concat(" modified")));//Flux<Mono<String>>
 
-        Flux.fromArray(new String[]{"Tom", "Melissa", "Steven", "Megan"})
-                .flatMap(name -> Mono.just(name.concat(" modified")))
-                .subscribe(System.out::println);
+        monoFlux.subscribe(System.out::println);
+//
+        Flux<String> stringFlux = Flux.fromArray(new String[]{"Tom", "Melissa", "Steven", "Megan"})
+                .flatMap(name -> Mono.just(name.concat(" modified")));//Flux<String>
+
+        stringFlux.subscribe(System.out::println);
 
     }
 
