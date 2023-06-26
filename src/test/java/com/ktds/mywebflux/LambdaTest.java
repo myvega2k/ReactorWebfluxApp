@@ -31,11 +31,20 @@ public class LambdaTest {
         //MyCustomer의 email 주소만 꺼내서 List<String>을 반환하기
         //ctrl + alt + v
         List<String> emailList = customers.stream() //Stream<MyCustomer>
-                .map(customer -> customer.getEmail()) //Stream<String>
+                //.map(customer -> customer.getEmail()) //Stream<String>
+                .map(MyCustomer::getEmail)
                 .collect(Collectors.toList());
        //emailList.forEach(email -> System.out.println(email));
         emailList.forEach(System.out::println);
+
+        customers.stream() //Stream<MyCustomer>
+                .filter(customer -> customer.getId() > 102)  //Stream<MyCustomer>
+                .map(customer -> customer.getEmail().toUpperCase()) //Stream<String>
+                .forEach(System.out::println);
     }
+
+    //map() 과 flatMap() 의 차이점??
+
     @Test
     void consumer() {
         //void accept(T t)
