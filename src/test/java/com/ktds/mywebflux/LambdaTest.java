@@ -15,6 +15,15 @@ public class LambdaTest {
             new MyCustomer(104, "kely", "kely@gmail.com", Arrays.asList("389246829364", "948609467"))
     );
 
+    /**
+     * 함수형 인터페이스 (java.util.function) 종류
+     * Consumer => void accept(T t)  입력만 있음
+     * Supplier => T get()      출력만 있음
+     * Predicate => boolean test(T t)  boolean 리턴
+     * Function => R apply(T t) 입력과 출력 모두 있음
+     * UnaryOperator = > Function(T,T) 와 동일
+     * BinaryOperator => Function(T,T,T) 와 동일
+     */
     @Test
     void consumer() {
         //void accept(T t)
