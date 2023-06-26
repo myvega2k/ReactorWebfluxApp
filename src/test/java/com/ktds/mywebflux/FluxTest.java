@@ -77,11 +77,11 @@ public class FluxTest {
 //                .expectComplete()
 //                .verify();
 
-//        StepVerifier.create(stringFlux)
-//                .thenRequest(2)
-//                .assertNext(msg -> Assertions.assertEquals(msg,"Hello"))
-//                .assertNext(msg -> Assertions.assertEquals(msg,"WebFlux"))
-//                .expectComplete();
+        StepVerifier.create(stringFlux)
+                .thenRequest(2)
+                .assertNext(msg -> Assertions.assertEquals(msg,"Hello"))
+                .assertNext(msg -> Assertions.assertEquals(msg,"WebFlux"))
+                .expectComplete();
                 //.verify();
     }
 

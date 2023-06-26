@@ -12,7 +12,7 @@ public class BackPressureTest {
         Flux<Integer> flux = Flux.just(101, 201, 301).log();
 
         StepVerifier.create(flux)
-                .thenRequest(1)
+                .thenRequest(1)//Subscription의 request(1)
                 .expectNext(101)
                 .thenRequest(2)
                 .expectNext(201, 301)
@@ -50,7 +50,7 @@ public class BackPressureTest {
 
     @Test
     public void baseSubscribe() {
-        Flux<Integer> integerFlux = Flux.range(1, 31).log();
+        Flux<Integer> integerFlux = Flux.range(1, 31).log(); //30건
 
         integerFlux.subscribe(new BaseSubscriber<Integer>() {
             int consumed = 0;
