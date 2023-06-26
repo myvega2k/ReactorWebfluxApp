@@ -10,7 +10,8 @@ import reactor.test.StepVerifier;
 public class FluxTest {
     @Test
     public void justFlux() {
-        Flux<String> stringFlux = Flux.just("Hello", "WebFlux").log();
+        Flux<String> stringFlux = Flux.just("Hello", "WebFlux")
+                .log();
         stringFlux.subscribe(val -> System.out.println("val = " + val));
 
         //StepVerifier 사용
@@ -19,7 +20,7 @@ public class FluxTest {
                 .expectNext("Hello")
                 .expectNext("WebFlux")
                 .verifyComplete();
-
+//
         StepVerifier.create(stringFlux)
                 .expectNextCount(2)
                 .expectComplete()
@@ -51,12 +52,13 @@ public class FluxTest {
         stringFlux.subscribe(new Subscriber<String>() {
             @Override
             public void onSubscribe(Subscription s) {
+                System.out.println("1. onSubscribe 호출됨");
                 //s.request(Integer.MAX_VALUE);
                 s.request(2);
             }
             @Override
             public void onNext(String s) {
-                System.out.println("FluxTest.onNext " + s);
+                System.out.println("2. FluxTest.onNext " + s);
             }
             @Override
             public void onError(Throwable t) {
@@ -64,7 +66,7 @@ public class FluxTest {
             }
             @Override
             public void onComplete() {
-                System.out.println("FluxTest.onComplete");
+                System.out.println("3.FluxTest.onComplete");
             }
         });
 
@@ -75,11 +77,11 @@ public class FluxTest {
 //                .expectComplete()
 //                .verify();
 
-        StepVerifier.create(stringFlux)
-                .thenRequest(2)
-                .assertNext(msg -> Assertions.assertEquals(msg,"Hello"))
-                .assertNext(msg -> Assertions.assertEquals(msg,"WebFlux"))
-                .expectComplete();
+//        StepVerifier.create(stringFlux)
+//                .thenRequest(2)
+//                .assertNext(msg -> Assertions.assertEquals(msg,"Hello"))
+//                .assertNext(msg -> Assertions.assertEquals(msg,"WebFlux"))
+//                .expectComplete();
                 //.verify();
     }
 
