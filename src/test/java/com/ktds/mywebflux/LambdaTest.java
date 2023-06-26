@@ -41,6 +41,10 @@ public class LambdaTest {
                 .collect(Collectors.toList());
         System.out.println("map() 함수 사용 = " + collect);
 
+        List<String> collect3 = customers.stream()
+                .flatMap(cust3 -> cust3.getPhoneNumbers().stream())
+                .collect(Collectors.toList());
+        System.out.println("flatMap() 함수 사용 = " + collect3);
 
     }
 
