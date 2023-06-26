@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class LambdaTest {
     //Immutable List
@@ -24,6 +25,17 @@ public class LambdaTest {
      * UnaryOperator = > Function(T,T) 와 동일
      * BinaryOperator => Function(T,T,T) 와 동일
      */
+
+    @Test
+    void emailList() {
+        //MyCustomer의 email 주소만 꺼내서 List<String>을 반환하기
+        //ctrl + alt + v
+        List<String> emailList = customers.stream() //Stream<MyCustomer>
+                .map(customer -> customer.getEmail()) //Stream<String>
+                .collect(Collectors.toList());
+       //emailList.forEach(email -> System.out.println(email));
+        emailList.forEach(System.out::println);
+    }
     @Test
     void consumer() {
         //void accept(T t)
