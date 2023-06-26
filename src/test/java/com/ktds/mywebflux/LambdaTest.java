@@ -24,9 +24,11 @@ public class LambdaTest {
                 System.out.println(myCustomer);
             }
         });
-
+        //2. Lambda Expression
         customers.forEach(customer -> System.out.println(customer));
-
+        System.out.println("===> Method Reference");
+        //3. Method Reference
+        customers.forEach(System.out::println);
     }
 
     @Test
