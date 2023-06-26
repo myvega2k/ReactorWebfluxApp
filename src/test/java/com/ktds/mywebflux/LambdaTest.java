@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class LambdaTest {
     //Immutable List
@@ -25,6 +26,23 @@ public class LambdaTest {
      * UnaryOperator = > Function(T,T) 와 동일
      * BinaryOperator => Function(T,T,T) 와 동일
      */
+
+    @Test
+    void mapToFlatMap() {
+        //map()  <R> Stream<R> map(Function<? super T,? extends R> mapper)
+        //flatMap() <R> Stream<R> flatMap(Function<? super T,? extends Stream<? extends R>> mapper)
+        Stream<List<String>> listStream = customers.stream()
+                .map(cust -> cust.getPhoneNumbers());
+        Stream<String> stringStream = customers.stream()
+                .flatMap(cust -> cust.getPhoneNumbers().stream());
+
+        List<List<String>> collect = customers.stream()
+                .map(cust2 -> cust2.getPhoneNumbers())
+                .collect(Collectors.toList());
+        System.out.println("map() 함수 사용 = " + collect);
+
+
+    }
 
     @Test
     void emailList() {
