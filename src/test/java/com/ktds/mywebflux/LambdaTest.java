@@ -4,15 +4,31 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class LambdaTest {
-
+    //Immutable List
     List<MyCustomer> customers = List.of(
             new MyCustomer(101, "john", "john@gmail.com", Arrays.asList("397937955", "21654725")),
             new MyCustomer(102, "smith", "smith@gmail.com", Arrays.asList("89563865", "2487238947")),
             new MyCustomer(103, "peter", "peter@gmail.com", Arrays.asList("38946328654", "3286487236")),
             new MyCustomer(104, "kely", "kely@gmail.com", Arrays.asList("389246829364", "948609467"))
     );
+
+    @Test
+    void consumer() {
+        //void accept(T t)
+        customers.forEach(new Consumer<MyCustomer>() {
+            @Override
+            public void accept(MyCustomer myCustomer) {
+                System.out.println(myCustomer);
+            }
+        });
+
+        customers.forEach(customer -> System.out.println(customer));
+
+    }
+
     @Test
     void runnable() {
         //1. Anonymous Inner Class 형태로  Runnable을 구현하기

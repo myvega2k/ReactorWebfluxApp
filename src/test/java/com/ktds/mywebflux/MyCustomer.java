@@ -1,12 +1,14 @@
 package com.ktds.mywebflux;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class MyCustomer {
     private int id;
     private String name;
