@@ -50,4 +50,32 @@ public class CustomerHandler {
                         )
         ).switchIfEmpty(response406);
     }
+
+    public Mono<ServerResponse> updateCustomer(ServerRequest request) {
+        Long id = Long.parseLong(request.pathVariable("id"));
+        Mono<Customer> unUpdatedCustomerMono = request.bodyToMono(Customer.class);
+
+        Mono<Customer> updatedCustomerMono = unUpdatedCustomerMono.flatMap(customer ->
+                customerRepository.findById(id)
+                        .flatMap(existCustomer -> {
+                            existCustomer.setFirstName(customer.getFirstName());
+                            existCustomer.setLastName(customer.getLastName());
+                            return customerRepository.save(existCustomer);
+                        })
+        );
+
+        return updatedCustomerMono.flatMap(customer ->
+                ServerResponse.accepted()
+                        .contentType(APPLICATION_JSON)
+                        .bodyValue(customer)
+        ).switchIfEmpty(getError(id));
+    }
+    public Mono<ServerResponse> deleteCustomer(ServerRequest request) {
+        Long id = Long.parseLong(request.pathVariable("id"));
+        return customerRepository.findById(id)
+                .flatMap(existCustomer ->
+                        ServerResponse.ok() //ServerResponse.BodyBuilder
+                                .build(customerRepository.delete(existCustomer)))
+                .switchIfEmpty(getError(id));
+    }
 }
