@@ -3,6 +3,7 @@ package com.ktds.mywebflux.handler;
 import com.ktds.mywebflux.entity.Customer;
 import com.ktds.mywebflux.repository.R2CustomerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -16,6 +17,8 @@ public class CustomerHandler {
 
     public Mono<ServerResponse> getCustomers(ServerRequest request) {
         Flux<Customer> customerFlux = customerRepository.findAll();
-
+        return ServerResponse.ok() //ServerResponse.BodyBuilder
+                .contentType(MediaType.APPLICATION_JSON) //ServerResponse.BodyBuilder
+                .body(customerFlux, Customer.class);
     }
 }
