@@ -29,10 +29,10 @@ public class CustomerHandler {
 
     public Mono<ServerResponse> getCustomer(ServerRequest request) {
         Long id = Long.parseLong(request.pathVariable("id"));
-        return customerRepository.findById(id)
-                .flatMap(customer -> ServerResponse.ok()
-                        .contentType(APPLICATION_JSON)
-                        .body(BodyInserters.fromValue(customer))
+        return customerRepository.findById(id) //Mono<Customer>
+                .flatMap(customer -> ServerResponse.ok() //ServerResponse.BodyBuilder
+                        .contentType(APPLICATION_JSON) //ServerResponse.BodyBuilder
+                        .body(BodyInserters.fromValue(customer)) //Mono<ServerResponse>
                 ).switchIfEmpty(getError(id));
     }
     private Mono<ServerResponse> getError(Long id) {
