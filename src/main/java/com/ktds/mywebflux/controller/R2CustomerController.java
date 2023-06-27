@@ -64,10 +64,13 @@ public class R2CustomerController {
     @GetMapping("/{id}")
     public Mono<Customer> findCustomerById(@PathVariable Long id) {
         return customerRepository.findById(id)
-                .switchIfEmpty(Mono.error(
-                                new CustomAPIException("Customer Not Found with id " + id, HttpStatus.NOT_FOUND)
-                        )
-                );
+                .switchIfEmpty(getCustomerNotFound(id));
+    }
+
+    private static Mono<Customer> getCustomerNotFound(Long id) {
+        return Mono.error(
+                new CustomAPIException("Customer Not Found with id " + id, HttpStatus.NOT_FOUND)
+        );
     }
 
     @GetMapping("/name/{lastName}")
@@ -79,4 +82,15 @@ public class R2CustomerController {
                                 HttpStatus.NOT_FOUND)));
     }
 
+    @PutMapping("/{id}")
+    public Mono<Customer> updateCustomer(@PathVariable Long id, @RequestBody Customer customer){
+        Mono<Customer> customerMono = customerRepository.findById(id)
+                .flatMap(existCustomer -> {
+                    existCustomer.setFirstName(customer.getFirstName());
+                    existCustomer.setLastName(customer.getLastName());
+                    return customerRepository.save(existCustomer);
+                });
+        return customerMono.switchIfEmpty(getCustomerNotFound(id));
+
+    }
 }
