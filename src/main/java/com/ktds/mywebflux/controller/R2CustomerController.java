@@ -1,7 +1,9 @@
 package com.ktds.mywebflux.controller;
 
 import com.ktds.mywebflux.entity.Customer;
+import com.ktds.mywebflux.exception.CustomAPIException;
 import com.ktds.mywebflux.repository.R2CustomerRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.web.bind.annotation.*;
@@ -57,6 +59,25 @@ public class R2CustomerController {
     public Flux<String> streamFlux() {
         return Flux.interval(Duration.ofSeconds(1))
                 .map(sequence -> "Flux - " + LocalTime.now().toString());
+    }
+
+    @GetMapping("/{id}")
+    public Mono<Customer> findCustomerById(@PathVariable Long id) {
+        return customerRepository.findById(id)
+                .switchIfEmpty(Mono.error(
+                                new CustomAPIException("Customer Not Found with id " + id, HttpStatus.NOT_FOUND)
+                        )
+                );
+    }
+
+    @GetMapping("/name/{lastName}")
+    public Flux<Customer> findByLastName(@PathVariable String lastName) {
+        Flux<Customer> customerFlux = customerRepository.findByLastName(lastName);
+        customerFlux.switchIfEmpty(
+                Mono.error(() ->
+                        new CustomAPIException("Customer Not Found with lastName = " + lastName,
+                                HttpStatus.NOT_FOUND)));
+        return customerFlux;
     }
 
 }

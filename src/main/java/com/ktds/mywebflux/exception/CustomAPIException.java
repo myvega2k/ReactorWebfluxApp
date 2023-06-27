@@ -2,7 +2,7 @@ package com.ktds.mywebflux.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class CustomAPIException extends Exception{
+public class CustomAPIException extends RuntimeException{
     private HttpStatus httpStatus;
 
     public CustomAPIException(String message) {
