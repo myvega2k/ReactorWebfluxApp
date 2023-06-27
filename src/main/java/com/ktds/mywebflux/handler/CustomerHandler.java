@@ -19,6 +19,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 @RequiredArgsConstructor
 public class CustomerHandler {
     private final R2CustomerRepository customerRepository;
+    private Mono<ServerResponse> response406 = ServerResponse.status(HttpStatus.NOT_ACCEPTABLE).build();
 
     public Mono<ServerResponse> getCustomers(ServerRequest request) {
         Flux<Customer> customerFlux = customerRepository.findAll();
@@ -37,5 +38,16 @@ public class CustomerHandler {
     }
     private Mono<ServerResponse> getError(Long id) {
         return Mono.error(new CustomAPIException("Customer Not Found with id " + id, HttpStatus.NOT_FOUND));
+    }
+    public Mono<ServerResponse> saveCustomer(ServerRequest request) {
+        Mono<Customer> unSavedCustomerMono = request.bodyToMono(Customer.class);
+        return unSavedCustomerMono.flatMap(customer ->
+                customerRepository.save(customer)
+                        .flatMap(savedCustomer ->
+                                ServerResponse.accepted()
+                                        .contentType(MediaType.APPLICATION_JSON)
+                                        .bodyValue(savedCustomer)
+                        )
+        ).switchIfEmpty(response406);
     }
 }

@@ -2,6 +2,7 @@ package com.ktds.mywebflux.router;
 
 import com.ktds.mywebflux.entity.Customer;
 import com.ktds.mywebflux.handler.CustomerHandler;
+import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -13,6 +14,11 @@ import static org.springframework.web.reactive.function.server.RequestPredicates
 
 @Configuration
 public class CustomerRouterFunction {
+    @Bean
+    public WebProperties.Resources resources() {
+        return new WebProperties.Resources();
+    }
+
     @Bean
     public RouterFunction<ServerResponse> routerFunction(CustomerHandler customerHandler) {
         //public Mono<ServerResponse> getCustomers(ServerRequest request) {
