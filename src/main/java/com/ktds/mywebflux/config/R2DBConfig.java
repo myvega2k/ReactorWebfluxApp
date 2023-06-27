@@ -32,9 +32,9 @@ public class R2DBConfig {
     public CommandLineRunner customer_insert_find(R2CustomerRepository repository) {
         return (args) -> {
             //delete all customers
-//            Mono<Void> deleteAll = repository.deleteAll();
-//            deleteAll.doOnSuccess(result -> System.out.println(" deleteAll ok "))
-//                            .subscribe();
+            Mono<Void> deleteAll = repository.deleteAll();
+            deleteAll.doOnSuccess(result -> log.info(result + " deleteAll ok "))
+                            .subscribe();
 
             // save a few customers
             repository.saveAll(Arrays.asList(
