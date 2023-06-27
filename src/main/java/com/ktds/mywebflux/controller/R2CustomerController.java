@@ -47,7 +47,10 @@ public class R2CustomerController {
         return sinksMany.asFlux()
                 .mergeWith(customerRepository.findAll())
                 .map(customer -> ServerSentEvent.builder(customer).build())
-                .doOnCancel(() -> sinksMany.asFlux().blockLast());
+                .doOnCancel(() -> {
+                    System.out.println("===> cancel 요청");
+                    sinksMany.asFlux().blockLast();
+                });
     }
 
     @GetMapping(path = "/stream-flux", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
