@@ -11,6 +11,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
+import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
 
 @Configuration
 public class CustomerRouterFunction {
@@ -24,7 +25,8 @@ public class CustomerRouterFunction {
         //public Mono<ServerResponse> getCustomers(ServerRequest request) {
         //HandlerFunction 의 추상메서드 Mono<T> handle(ServerRequest request);
         return RouterFunctions.route(GET("/router/r2customers"),customerHandler::getCustomers)
-                .andRoute(GET("/router/r2customers/{id}"), customerHandler::getCustomer);
+                .andRoute(GET("/router/r2customers/{id}"), customerHandler::getCustomer)
+                .andRoute(POST("/router/r2customers"), customerHandler::saveCustomer);
     }
 //    public RouterFunction<ServerResponse> routerFunction() {
 //        return RouterFunctions.route(GET("/route/r2customers"), new HandlerFunction<ServerResponse>() {

@@ -44,9 +44,9 @@ public class CustomerHandler {
         return unSavedCustomerMono.flatMap(customer ->
                 customerRepository.save(customer)
                         .flatMap(savedCustomer ->
-                                ServerResponse.accepted()
-                                        .contentType(MediaType.APPLICATION_JSON)
-                                        .bodyValue(savedCustomer)
+                                ServerResponse.accepted() //202 status code ServerResponse.BodyBuilder
+                                        .contentType(APPLICATION_JSON) //ServerResponse.BodyBuilder
+                                        .bodyValue(savedCustomer) //Mono<ServerResponse>
                         )
         ).switchIfEmpty(response406);
     }
