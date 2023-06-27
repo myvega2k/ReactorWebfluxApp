@@ -17,7 +17,7 @@ public class CustomerRouterFunction {
     public RouterFunction<ServerResponse> routerFunction(CustomerHandler customerHandler) {
         //public Mono<ServerResponse> getCustomers(ServerRequest request) {
         //HandlerFunction 의 추상메서드 Mono<T> handle(ServerRequest request);
-        return RouterFunctions.route(GET("/route/r2customers"),customerHandler::getCustomers)
+        return RouterFunctions.route(GET("/router/r2customers"),customerHandler::getCustomers)
                 .andRoute(GET("/router/r2customers/{id}"), customerHandler::getCustomer);
     }
 //    public RouterFunction<ServerResponse> routerFunction() {
