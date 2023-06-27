@@ -72,12 +72,11 @@ public class R2CustomerController {
 
     @GetMapping("/name/{lastName}")
     public Flux<Customer> findByLastName(@PathVariable String lastName) {
-        Flux<Customer> customerFlux = customerRepository.findByLastName(lastName);
-        customerFlux.switchIfEmpty(
-                Mono.error(() ->
+        //Flux<Customer> customerFlux = customerRepository.findByLastName(lastName);
+        return customerRepository.findByLastName(lastName)
+                .switchIfEmpty(Mono.error(() ->
                         new CustomAPIException("Customer Not Found with lastName = " + lastName,
                                 HttpStatus.NOT_FOUND)));
-        return customerFlux;
     }
 
 }
